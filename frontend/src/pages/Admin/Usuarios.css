@@ -1,0 +1,175 @@
+.encabezado {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.encabezado h2 {
+  font-size: 1.75rem;
+  color: #102a5a;
+  margin: 0;
+}
+
+.encabezado button {
+  background: #2563eb;
+  color: white;
+  padding: 0.95rem 1.5rem;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.encabezado button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 20px 40px rgba(37, 99, 235, 0.18);
+}
+
+.busqueda {
+  width: min(100%, 340px);
+  padding: 0.95rem 1rem;
+  margin-bottom: 1.5rem;
+  border-radius: 18px;
+  border: 1px solid #dbe4ef;
+  background: #f8fbff;
+}
+
+.MuiDataGrid-root {
+  border: none;
+  background: #ffffff;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.08);
+}
+
+.MuiDataGrid-main .MuiDataGrid-columnHeaders {
+  border-bottom: 1px solid #c5d0dc;
+  background-color: #eef5ff;
+}
+
+.MuiDataGrid-root .MuiDataGrid-virtualScroller {
+  background: #fbfdff;
+}
+
+th {
+  background: #e9f2ff;
+  color: #102a5a;
+  padding: 1rem 1.25rem;
+  text-align: left;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+td {
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid #f0f4fb;
+  color: #475569;
+}
+
+tbody tr:hover {
+  background: #f8fbff;
+}
+
+.estado,
+.eliminar {
+  border: none;
+  padding: 0.45rem 0.75rem;
+  letter-spacing: 0.01em;
+  font-weight: 700;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  font-size: 0.85rem;
+  min-width: 0;
+}
+
+.estado {
+  background: #22c55e;
+  color: white;
+}
+
+.estado:hover {
+  opacity: 0.95;
+  transform: translateY(-1px);
+}
+
+.eliminar {
+  background: #ef4444;
+  color: white;
+}
+
+.eliminar:hover {
+  opacity: 0.95;
+  transform: translateY(-1px);
+}
+
+/* Botones compartidos para la tabla de usuarios */
+.estado,
+.eliminar,
+.editar {
+  border: none;
+  padding: 0.3rem 0.5rem;
+  letter-spacing: 0.01em;
+  font-weight: 700;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  font-size: 0.78rem;
+  min-width: 76px;
+  width: 76px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.editar {
+  background: #2563eb;
+  color: white;
+}
+
+.estado {
+  background: #22c55e;
+  color: white;
+}
+
+.eliminar {
+  background: #ef4444;
+  color: white;
+}
+
+.editar:hover,
+.estado:hover,
+.eliminar:hover {
+  opacity: 0.95;
+  transform: translateY(-1px);
+}
+
+/* Ajuste extra para botones pequeños dentro de DataGrid */
+.MuiDataGrid-cell .estado,
+.MuiDataGrid-cell .eliminar,
+.MuiDataGrid-cell .editar {
+  width: 76px;
+  min-width: 76px;
+  padding: 0;
+  font-size: 0.76rem;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.acciones-botones {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+}
+
+.acciones-botones button {
+  flex: 1;
+}

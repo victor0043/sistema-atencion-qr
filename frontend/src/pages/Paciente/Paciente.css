@@ -1,0 +1,55 @@
+.cardPaciente{
+
+background:white;
+
+padding:30px;
+
+border-radius:12px;
+
+box-shadow:0 5px 12px rgba(0,0,0,.15);
+
+max-width:650px;
+
+margin:auto;
+
+}
+
+.cardPaciente h2{
+
+color:#1565c0;
+
+margin-bottom:20px;
+
+}
+
+.cardPaciente p{
+
+margin:10px 0;
+
+}
+
+.cardPaciente button{
+
+width:100%;
+
+padding:12px;
+
+margin-top:15px;
+
+border:none;
+
+border-radius:8px;
+
+background:#1565c0;
+
+color:white;
+
+cursor:pointer;
+
+}
+
+.cardPaciente button:last-child{
+
+background:#2e7d32;
+
+}

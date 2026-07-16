@@ -1,0 +1,113 @@
+/* Compact styles for EstadoMedicos */
+.estado-medicos-container{
+  background:#fff;
+  border-radius:12px;
+  padding:12px;
+  box-shadow:0 6px 18px rgba(15,23,42,0.04);
+}
+.estado-medicos-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:1rem;
+  margin-bottom:8px;
+}
+.estado-medicos-header h2{
+  margin:0;
+  font-size:1.25rem;
+}
+.acciones .btn-actualizar{
+  background:#1565c0;
+  color:#fff;
+  border:none;
+  padding:6px 10px;
+  border-radius:8px;
+  cursor:pointer;
+}
+.tabla-wrap{overflow:auto}
+.tabla-medicos{width:100%;border-collapse:collapse;font-size:0.92rem}
+.tabla-medicos th{background:#1565c0;color:#fff;padding:8px 10px;text-align:left;border-radius:6px}
+.tabla-medicos td{padding:8px 10px;border-bottom:1px solid #eee}
+.sin-datos{text-align:center;color:#6b7280;padding:18px}
+.info{color:#0ea5e9}
+.error{color:#dc2626}
+
+@media (max-width: 700px){
+  .estado-medicos-header h2{font-size:1rem}
+  .tabla-medicos th, .tabla-medicos td{padding:6px 8px;font-size:0.88rem}
+}
+.estado-medicos{
+
+    background:white;
+
+    padding:25px;
+
+    border-radius:12px;
+
+    box-shadow:0 4px 10px rgba(0,0,0,.1);
+
+}
+
+.estado-medicos h2{
+
+    color:#1565c0;
+
+    margin-bottom:20px;
+
+}
+
+.cards-medicos{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+
+    gap:20px;
+
+}
+
+.card-medico{
+
+    background:#f5f7fa;
+
+    border-left:5px solid #1565c0;
+
+    padding:20px;
+
+    border-radius:10px;
+
+}
+
+.card-medico h3{
+
+    margin-bottom:10px;
+
+    color:#1565c0;
+
+}
+
+.estado{
+
+    font-weight:bold;
+
+    margin-top:10px;
+
+}
+
+.estado.libre{
+
+    color:#2e7d32;
+
+}
+
+.estado.atendiendo{
+
+    color:#ef6c00;
+
+}
+
+.estado.ocupado{
+
+    color:#d32f2f;
+
+}

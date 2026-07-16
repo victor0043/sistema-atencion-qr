@@ -1,0 +1,342 @@
+body {
+  background: transparent;
+}
+
+.pantalla {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.pantalla h1,
+.pantalla h2 {
+  text-align: center;
+}
+
+.pantalla h1 {
+  color: #102a5a;
+  font-size: clamp(2rem, 2.5vw, 2.5rem);
+  margin-bottom: 0.5rem;
+}
+
+.pantalla h2 {
+  color: #475569;
+  font-size: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Controles de vista */
+.controles-trazabilidad {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.btn-vista {
+  padding: 0.75rem 1.5rem;
+  border: 2px solid #e2e8f0;
+  background: white;
+  color: #475569;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-vista:hover {
+  border-color: #0066cc;
+  color: #0066cc;
+}
+
+.btn-vista.activo {
+  background: #0066cc;
+  color: white;
+  border-color: #0066cc;
+}
+
+/* ======== VISTA CARDS ======== */
+.cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+.card-cita {
+  background: white;
+  border-radius: 12px;
+  padding: 1.25rem;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.08);
+  border-left: 5px solid #e2e8f0;
+  transition: all 0.3s ease;
+}
+
+.card-cita:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.15);
+}
+
+.card-cita.card-estado-AGENDADA {
+  border-left-color: #94a3b8;
+  background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+}
+
+.card-cita.card-estado-EN_ESPERA {
+  border-left-color: #f59e0b;
+  background: linear-gradient(135deg, #fefce8 0%, #ffffff 100%);
+}
+
+.card-cita.card-estado-ATENDIENDO {
+  border-left-color: #0066cc;
+  background: linear-gradient(135deg, #eff6ff 0%, #ffffff 100%);
+}
+
+.card-cita.card-estado-FINALIZADA {
+  border-left-color: #10b981;
+  background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #f1f5f9;
+}
+
+.estado-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.estado-icon {
+  font-size: 1.5rem;
+}
+
+.estado-text {
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.25rem 0.75rem;
+  border-radius: 6px;
+}
+
+.estado-text.gris {
+  background: #e2e8f0;
+  color: #475569;
+}
+
+.estado-text.amarillo {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.estado-text.azul {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.estado-text.verde {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.card-hora {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #102a5a;
+}
+
+.hora-label {
+  display: inline-block;
+}
+
+.card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+}
+
+.label {
+  color: #64748b;
+  font-weight: 500;
+}
+
+.valor {
+  color: #102a5a;
+  font-weight: 600;
+}
+
+.box-number {
+  background: #0066cc;
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+}
+
+.qr-code {
+  font-family: monospace;
+  font-size: 0.8rem;
+  background: #f1f5f9;
+  padding: 0.25rem 0.5rem;
+  border-radius: 3px;
+}
+
+.separator {
+  height: 1px;
+  background: #e2e8f0;
+  margin: 0.5rem 0;
+}
+
+/* ======== VISTA TABLA ======== */
+.tabla-mejorada {
+  width: 100%;
+  background: white;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.08);
+}
+
+.tabla-mejorada thead {
+  background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+}
+
+.tabla-mejorada th {
+  background-color: rgba(15, 23, 42, 0.95);
+  color: #ffffff !important;
+  padding: 1.25rem 1rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-align: left;
+  letter-spacing: 0.03em;
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
+}
+
+.tabla-mejorada td {
+  padding: 1.25rem 1rem;
+  text-align: left;
+  font-size: 0.95rem;
+  color: #475569;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.tabla-mejorada tbody tr:hover {
+  background: #f8fafc;
+  transition: background 0.2s ease;
+}
+
+.tabla-mejorada tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.fila-AGENDADA {
+  --fila-color: #e2e8f0;
+}
+
+.fila-EN_ESPERA {
+  --fila-color: #fef3c7;
+}
+
+.fila-ATENDIENDO {
+  --fila-color: #dbeafe;
+}
+
+.fila-FINALIZADA {
+  --fila-color: #dcfce7;
+}
+
+.tabla-mejorada tbody tr:hover {
+  background: var(--fila-color, #f8fafc);
+}
+
+.badge-estado {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.badge-icon {
+  font-size: 1.1rem;
+}
+
+.badge-estado.gris {
+  background: #e2e8f0;
+  color: #475569;
+}
+
+.badge-estado.amarillo {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.badge-estado.azul {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.badge-estado.verde {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.celda-hora,
+.celda-fecha {
+  font-weight: 600;
+  color: #102a5a;
+}
+
+.celda-paciente,
+.celda-medico {
+  font-weight: 500;
+}
+
+.celda-especialidad {
+  color: #64748b;
+}
+
+.box-badge {
+  background: #0066cc;
+  color: white;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+  .cards-container {
+    grid-template-columns: 1fr;
+  }
+
+  .tabla-mejorada {
+    font-size: 0.85rem;
+  }
+
+  .tabla-mejorada th,
+  .tabla-mejorada td {
+    padding: 0.75rem 0.5rem;
+  }
+
+  .info-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+}

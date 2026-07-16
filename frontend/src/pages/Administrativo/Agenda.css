@@ -1,0 +1,59 @@
+
+.barraAgenda{
+	display:flex;
+	justify-content:space-between;
+	align-items:center;
+	margin-bottom:18px;
+}
+
+.barraAgenda button{
+	background: linear-gradient(180deg,var(--primary),var(--primary-600));
+	color:white;
+	padding:10px 14px;
+	border:none;
+	border-radius:12px;
+	cursor:pointer;
+	box-shadow: var(--shadow-lg);
+}
+
+.acciones-right{display:flex;gap:0.5rem;align-items:center}
+
+.btn-export{background:#0ea5a4}
+
+.filtros{display:flex;gap:0.5rem;margin-bottom:12px;align-items:center}
+
+.filtros select,.filtros input{padding:8px 10px;border-radius:8px;border:1px solid #dbe4ef}
+
+
+.agenda-card{background:var(--card-bg);border-radius:14px;box-shadow:var(--shadow-lg);padding:14px;border:1px solid rgba(13,27,51,0.04)}
+
+table{
+	width:100%;
+	background:transparent;
+	border-collapse:collapse;
+}
+
+
+th{
+	background: #eef5ff;
+	color: #0f172a;
+	padding:12px 14px;
+	text-align:left;
+	font-weight:700;
+}
+
+td{
+	padding:12px 14px;
+	border-bottom:1px solid #f1f5f9;
+	color:var(--muted);
+}
+
+.filtros{display:flex;gap:0.6rem;margin-bottom:12px}
+
+.filtros select,.filtros input{padding:8px 10px;border-radius:10px;border:1px solid #e6eef9;background:var(--surface)}
+
+.btn-export{background:#06b6d4}
+
+.paginacion{display:flex;gap:0.5rem;align-items:center;justify-content:flex-end;margin-top:12px}
+
+.paginacion button{padding:6px 10px;border-radius:8px;border:1px solid #dbe4ef;background:white}

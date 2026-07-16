@@ -1,0 +1,42 @@
+.contenedor {
+  display: flex;
+  gap: 1rem;
+  min-height: calc(100vh - 70px);
+  padding: 0.75rem 1rem 1rem;
+  background: linear-gradient(180deg, #e8eef7 0%, #d7e0eb 100%);
+}
+
+:root{
+  --primary: #1d4ed8;
+  --primary-600: #2563eb;
+  --muted: #6b7280;
+  --card-bg: #ffffff;
+  --surface: #f7fbff;
+  --shadow-lg: 0 24px 60px rgba(13,27,51,0.08);
+}
+
+.contenedor.sin-sidebar {
+  justify-content: center;
+}
+
+main {
+  flex: 1;
+  max-width: 1180px;
+  padding: 1rem;
+  background: #f7fbff;
+  min-height: calc(100vh - 70px - 2rem);
+  border-radius: 18px;
+  border: 1px solid #cdd7e6;
+  box-shadow: 0 24px 60px rgba(13, 27, 51, 0.08);
+}
+
+@media (max-width: 900px) {
+  .contenedor {
+    padding: 0.5rem;
+  }
+
+  main {
+    padding: 0.6rem;
+    border-radius: 12px;
+  }
+}
