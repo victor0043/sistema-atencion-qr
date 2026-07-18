@@ -175,14 +175,14 @@ class AdminService {
                 activo: true
             });
 
-            // Crear perfil asociado según rol: 2=ADMINISTRATIVO, 3=MEDICO, 4=PACIENTE
+            // Crear perfil asociado según rol: 2=MEDICO, 3=ADMINISTRATIVO, 4=PACIENTE
             let medico = null;
             let administrativo = null;
             let paciente = null;
 
             try {
-                // Si rol es MEDICO (3), crear registro en medicos
-                if (Number(datos.rol_id) === 3) {
+                // Si rol es MEDICO (2), crear registro en medicos
+                if (Number(datos.rol_id) === 2) {
                     const respMedico = await this.crearMedico({
                         usuario_id: usuario.id,
                         especialidad: datos.especialidad || null,
@@ -192,8 +192,8 @@ class AdminService {
                     if (respMedico.ok) medico = respMedico.medico;
                 }
 
-                // Si rol es ADMINISTRATIVO (2), crear registro en administrativos
-                if (Number(datos.rol_id) === 2) {
+                // Si rol es ADMINISTRATIVO (3), crear registro en administrativos
+                if (Number(datos.rol_id) === 3) {
                     const respAdmin = await this.crearAdministrativo({
                         usuario_id: usuario.id,
                         cargo: datos.cargo || null
