@@ -11,6 +11,12 @@ Este repositorio contiene varios microservicios y un frontend para el sistema de
 - `backend/patient-service` - Microservicio de pacientes
 - `frontend` - Aplicación React/Vite
 
+## Variables de entorno
+
+Los secretos compartidos (`DB_PASSWORD`, `JWT_SECRET`, `INTERNAL_API_KEY`) se leen desde
+un archivo `.env` en la raíz del proyecto (ver `env_file:` en `docker-compose.yml`). Ya existe
+un `.env` con valores de desarrollo listos para usar; `.env.example` documenta el formato.
+
 ## Ejecutar con Docker Compose
 
 Desde la raíz del proyecto:
@@ -45,5 +51,4 @@ con ids fijos 1-4, usados por el middleware `verificarRol(...)` en todos los ser
 ## Notas
 
 - Se usa PostgreSQL para la base de datos.
-- Las variables de entorno se proporcionan desde el `docker-compose.yml`.
 - El frontend está configurado para conectarse a los servicios backend por nombre de servicio Docker.

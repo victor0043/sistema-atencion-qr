@@ -5,10 +5,13 @@ services:
     container_name: hospitalqr_db
     restart: unless-stopped
 
+    env_file:
+      - .env
+
     environment:
       POSTGRES_DB: hospital_qr
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: admin123
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
 
     ports:
       - "5432:5432"
@@ -37,6 +40,9 @@ services:
     ports:
       - "3003:3003"
 
+    env_file:
+      - .env
+
     environment:
 
       PORT: 3003
@@ -45,9 +51,7 @@ services:
       DB_PORT: 5432
       DB_NAME: hospital_qr
       DB_USER: postgres
-      DB_PASSWORD: admin123
 
-      JWT_SECRET: HospitalQR2026
       JWT_EXPIRES: 8h
 
     depends_on:
@@ -70,6 +74,9 @@ services:
     ports:
       - "3001:3001"
 
+    env_file:
+      - .env
+
     environment:
 
       PORT: 3001
@@ -78,14 +85,10 @@ services:
       DB_PORT: 5432
       DB_NAME: hospital_qr
       DB_USER: postgres
-      DB_PASSWORD: admin123
 
-      JWT_SECRET: HospitalQR2026
       JWT_EXPIRES: 8h
 
       PATIENT_SERVICE_URL: http://patient-service:3005
-
-      INTERNAL_API_KEY: secret-internal-key
 
     depends_on:
 
@@ -110,6 +113,9 @@ services:
     ports:
       - "3005:3005"
 
+    env_file:
+      - .env
+
     environment:
 
       PORT: 3005
@@ -118,12 +124,8 @@ services:
       DB_PORT: 5432
       DB_NAME: hospital_qr
       DB_USER: postgres
-      DB_PASSWORD: admin123
 
-      JWT_SECRET: HospitalQR2026
       JWT_EXPIRES: 8h
-
-      INTERNAL_API_KEY: secret-internal-key
 
     depends_on:
 
@@ -145,6 +147,9 @@ services:
     ports:
       - "3004:3004"
 
+    env_file:
+      - .env
+
     environment:
 
       PORT: 3004
@@ -153,9 +158,7 @@ services:
       DB_PORT: 5432
       DB_NAME: hospital_qr
       DB_USER: postgres
-      DB_PASSWORD: admin123
 
-      JWT_SECRET: HospitalQR2026
       JWT_EXPIRES: 8h
 
     depends_on:
@@ -178,6 +181,9 @@ services:
     ports:
       - "3002:3002"
 
+    env_file:
+      - .env
+
     environment:
 
       PORT: 3002
@@ -186,12 +192,8 @@ services:
       DB_PORT: 5432
       DB_NAME: hospital_qr
       DB_USER: postgres
-      DB_PASSWORD: admin123
 
-      JWT_SECRET: HospitalQR2026
       JWT_EXPIRES: 8h
-
-      INTERNAL_API_KEY: secret-internal-key
 
     depends_on:
 
