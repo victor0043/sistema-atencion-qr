@@ -6,6 +6,7 @@ const cors = require('cors');
 const { conectarDB } = require('./src/config/database');
 
 const authRoutes = require('./src/routes/authRoutes');
+const seedInicial = require('./src/utils/seed');
 
 const app = express();
 
@@ -38,6 +39,7 @@ const iniciarServidor = async () => {
     try {
 
         await conectarDB();
+        await seedInicial();
 
         app.listen(app.get('port'), () => {
 
