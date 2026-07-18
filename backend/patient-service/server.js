@@ -26,10 +26,25 @@ app.get('/', (req, res) => {
 
 app.use('/api/patients', patientRoutes);
 
+// Otros servicios (appointment-service, auth-service) también crean tablas
+// compartidas (usuarios, medicos) al arrancar en paralelo; "CREATE TABLE IF
+// NOT EXISTS" no es atómico entre transacciones concurrentes en Postgres,
+// así que se reintenta con backoff en vez de fallar el arranque.
+const syncConReintento = async (options = {}, intentos = 5) => {
+    for (let intento = 1; intento <= intentos; intento++) {
+        try {
+            return await sequelize.sync(options);
+        } catch (error) {
+            if (intento === intentos) throw error;
+            await new Promise((resolve) => setTimeout(resolve, 500 * intento));
+        }
+    }
+};
+
 const iniciarServidor = async () => {
     try {
         await conectarDB();
-        await sequelize.sync({ alter: true });
+        await syncConReintento({ alter: true });
 
         app.listen(app.get('port'), () => {
             console.log('=================================');

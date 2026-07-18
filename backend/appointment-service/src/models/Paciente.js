@@ -1,6 +1,8 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../config/database');
 
+// Modelo alineado con el de patient-service, que es el dueño del esquema
+// de 'pacientes' (único servicio que corre sync con alter:true sobre esta tabla).
 const Paciente = sequelize.define('pacientes', {
     id: {
         type: DataTypes.INTEGER,
@@ -9,6 +11,18 @@ const Paciente = sequelize.define('pacientes', {
     },
     usuario_id: {
         type: DataTypes.INTEGER
+    },
+    direccion: {
+        type: DataTypes.TEXT
+    },
+    telefono: {
+        type: DataTypes.STRING(20)
+    },
+    fecha_nacimiento: {
+        type: DataTypes.DATEONLY
+    },
+    prevision: {
+        type: DataTypes.STRING(100)
     }
 }, {
     tableName: 'pacientes',

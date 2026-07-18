@@ -3,7 +3,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 
-const { conectarDB } = require('./src/config/database');
+const { conectarDB, sequelize } = require('./src/config/database');
 
 const medicalRoutes = require('./src/routes/medicalRoutes');
 
@@ -34,12 +34,28 @@ app.get('/', (req, res) => {
 // Rutas
 app.use('/api/medical', medicalRoutes);
 
+// Otros servicios (appointment-service, patient-service, auth-service) también
+// crean tablas compartidas (usuarios, medicos, citas) al arrancar en paralelo;
+// "CREATE TABLE IF NOT EXISTS" no es atómico entre transacciones concurrentes
+// en Postgres, así que se reintenta con backoff en vez de fallar el arranque.
+const syncConReintento = async (options = {}, intentos = 5) => {
+    for (let intento = 1; intento <= intentos; intento++) {
+        try {
+            return await sequelize.sync(options);
+        } catch (error) {
+            if (intento === intentos) throw error;
+            await new Promise((resolve) => setTimeout(resolve, 500 * intento));
+        }
+    }
+};
+
 // Iniciar servidor
 const iniciarServidor = async () => {
 
     try {
 
         await conectarDB();
+        await syncConReintento({ alter: true });
 
         app.listen(app.get('port'), () => {
 
