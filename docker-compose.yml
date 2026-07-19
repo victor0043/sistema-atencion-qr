@@ -89,6 +89,7 @@ services:
       JWT_EXPIRES: 8h
 
       PATIENT_SERVICE_URL: http://patient-service:3005
+      APPOINTMENT_SERVICE_URL: http://appointment-service:3002
 
     depends_on:
 
