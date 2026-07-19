@@ -1,6 +1,8 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../config/database');
 
+// Modelo alineado con el de appointment-service, que es el dueño del esquema
+// de 'citas' (único servicio que corre sync con alter:true sobre esta tabla).
 const Cita = sequelize.define('citas', {
 
     id: {
@@ -31,6 +33,10 @@ const Cita = sequelize.define('citas', {
 
     codigo_qr: {
         type: DataTypes.STRING
+    },
+
+    fecha_creacion: {
+        type: DataTypes.DATE
     }
 
 }, {

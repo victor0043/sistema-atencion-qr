@@ -3,9 +3,12 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 
-const { conectarDB, sequelize } = require('./src/config/database');
+const { conectarDB } = require('./src/config/database');
 
 const medicalRoutes = require('./src/routes/medicalRoutes');
+
+const Atencion = require('./src/models/Atencion');
+const Cita = require('./src/models/Cita');
 
 const app = express();
 
@@ -56,14 +59,14 @@ app.use((err, req, res, next) => {
     return res.status(500).json({ ok: false, mensaje: 'Error interno del servidor' });
 });
 
-// Otros servicios (appointment-service, patient-service, auth-service) también
-// crean tablas compartidas (usuarios, medicos, citas) al arrancar en paralelo;
-// "CREATE TABLE IF NOT EXISTS" no es atómico entre transacciones concurrentes
-// en Postgres, así que se reintenta con backoff en vez de fallar el arranque.
-const syncConReintento = async (options = {}, intentos = 5) => {
+// appointment-service también crea/altera la tabla 'citas' al arrancar en
+// paralelo; "CREATE TABLE IF NOT EXISTS" no es atómico entre transacciones
+// concurrentes en Postgres, así que se reintenta con backoff en vez de
+// fallar el arranque.
+const syncConReintento = async (model, options = {}, intentos = 5) => {
     for (let intento = 1; intento <= intentos; intento++) {
         try {
-            return await sequelize.sync(options);
+            return await model.sync(options);
         } catch (error) {
             if (intento === intentos) throw error;
             await new Promise((resolve) => setTimeout(resolve, 500 * intento));
@@ -77,7 +80,12 @@ const iniciarServidor = async () => {
     try {
 
         await conectarDB();
-        await syncConReintento({ alter: true });
+
+        // medical-service es dueño de 'atenciones': puede alterar su esquema.
+        // 'citas' pertenece a appointment-service; aquí solo se garantiza su
+        // existencia (create-if-missing, nunca alter).
+        await syncConReintento(Cita, {});
+        await syncConReintento(Atencion, { alter: true });
 
         app.listen(app.get('port'), () => {
 
