@@ -76,8 +76,8 @@ function Usuarios() {
     const nombreRol = (usuario) => {
         return usuario.rol?.nombre || usuario.Rol?.nombre || {
             1: "Administrador",
-            2: "Administrativo",
-            3: "Medico",
+            2: "Medico",
+            3: "Administrativo",
             4: "Paciente"
         }[usuario.rol_id] || "-";
     };

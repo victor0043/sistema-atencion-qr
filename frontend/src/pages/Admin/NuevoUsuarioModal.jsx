@@ -212,13 +212,13 @@ onChange={cambiarValor}
 >
 <option value="">Seleccione Rol</option>
 <option value="1">Administrador</option>
-<option value="2">Administrativo</option>
-<option value="3">Médico</option>
+<option value="2">Médico</option>
+<option value="3">Administrativo</option>
 <option value="4">Paciente</option>
 </select>
 </div>
 
-{Number(formulario.rol_id)===3 &&
+{Number(formulario.rol_id)===2 &&
 <>
 <div className="campo">
 <label>Especialidad</label>
@@ -244,7 +244,7 @@ onChange={cambiarValor}
 </>
 }
 
-{Number(formulario.rol_id)===2 &&
+{Number(formulario.rol_id)===3 &&
 <div className="campo full-width">
 <label>Cargo</label>
 <input
