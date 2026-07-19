@@ -232,24 +232,23 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
 
+      # Vite compila import.meta.env.VITE_* de forma estática: deben llegar como
+      # build args (no como environment:, que solo existe en runtime del contenedor,
+      # demasiado tarde para un build ya hecho). Apuntan a localhost porque estas URLs
+      # las usa el navegador del usuario, que corre fuera de la red interna de Docker.
+      args:
+        VITE_AUTH_URL: http://localhost:3003
+        VITE_ADMIN_URL: http://localhost:3001
+        VITE_PATIENT_URL: http://localhost:3005
+        VITE_APPOINTMENT_URL: http://localhost:3002
+        VITE_MEDICAL_URL: http://localhost:3004
+
     container_name: hospitalqr_frontend
 
     restart: unless-stopped
 
     ports:
       - "5173:4173"
-
-    environment:
-
-      VITE_AUTH_URL: http://localhost:3003
-
-      VITE_ADMIN_URL: http://localhost:3001
-
-      VITE_PATIENT_URL: http://localhost:3005
-
-      VITE_APPOINTMENT_URL: http://localhost:3002
-
-      VITE_MEDICAL_URL: http://localhost:3004
 
     depends_on:
 
