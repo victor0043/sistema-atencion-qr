@@ -13,6 +13,8 @@ const Paciente = require('./src/models/Paciente');
 const Medico = require('./src/models/Medico');
 const Usuario = require('./src/models/Usuario');
 
+const { inicializarBlobStorage } = require('./src/services/blobStorageService');
+
 const app = express();
 
 // Configuración
@@ -97,6 +99,8 @@ const iniciarServidor = async () => {
             syncConReintento(Medico)
         ]);
         await syncConReintento(Cita, { alter: true });
+
+        await inicializarBlobStorage();
 
         app.listen(app.get('port'), () => {
 
