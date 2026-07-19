@@ -32,6 +32,10 @@ services:
     container_name: hospitalqr_azurite
     restart: unless-stopped
 
+    # --skipApiVersionCheck: el SDK @azure/storage-blob más nuevo puede pedir una
+    # versión de API más reciente que la que Azurite valida por defecto.
+    command: "azurite-blob --blobHost 0.0.0.0 --skipApiVersionCheck"
+
     ports:
       - "10000:10000"
 
