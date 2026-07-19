@@ -27,6 +27,19 @@ services:
 
 ###########################################################
 
+  azurite:
+    image: mcr.microsoft.com/azure-storage/azurite:latest
+    container_name: hospitalqr_azurite
+    restart: unless-stopped
+
+    ports:
+      - "10000:10000"
+
+    volumes:
+      - azurite_data:/data
+
+###########################################################
+
   auth-service:
 
     build:
@@ -203,6 +216,9 @@ services:
       db:
         condition: service_healthy
 
+      azurite:
+        condition: service_started
+
 ###########################################################
 
   frontend:
@@ -251,3 +267,4 @@ services:
 volumes:
 
   db_data:
+  azurite_data:
