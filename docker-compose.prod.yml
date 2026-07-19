@@ -1,0 +1,264 @@
+# =============================================================
+# docker-compose.prod.yml — variante para las EC2 (Ev.3)
+# Diferencias contra docker-compose.yml (dev local):
+# - Sin Azurite: usa la cuenta real de Azure Blob Storage
+#   (AZURE_STORAGE_CONNECTION_STRING real en el .env que escribe
+#   user_data.sh, no la connection string bien conocida del emulador).
+# - VITE_*_URL del frontend se toman de .env (${VAR}), no están
+#   hardcodeadas a localhost: en cada EC2 apuntan al DNS del ALB
+#   (mismo origen para las 5, el ALB enruta por path).
+# - Sigue usando un Postgres LOCAL por instancia (RDS se provisiona
+#   esta iteración pero no se conecta todavía — próxima iteración).
+# =============================================================
+
+services:
+
+  db:
+    image: postgres:15
+    container_name: hospitalqr_db
+    restart: unless-stopped
+
+    env_file:
+      - .env
+
+    environment:
+      POSTGRES_DB: hospital_qr
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+    healthcheck:
+      test: ["CMD-SHELL","pg_isready -U postgres -d hospital_qr"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+###########################################################
+
+  auth-service:
+
+    build:
+      context: ./backend/auth-service
+      dockerfile: Dockerfile
+
+    container_name: hospitalqr_auth_service
+
+    restart: unless-stopped
+
+    ports:
+      - "3003:3003"
+
+    env_file:
+      - .env
+
+    environment:
+
+      PORT: 3003
+
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: hospital_qr
+      DB_USER: postgres
+
+      JWT_EXPIRES: 8h
+
+    depends_on:
+
+      db:
+        condition: service_healthy
+
+###########################################################
+
+  admin-service:
+
+    build:
+      context: ./backend/admin-service
+      dockerfile: Dockerfile
+
+    container_name: hospitalqr_admin_service
+
+    restart: unless-stopped
+
+    ports:
+      - "3001:3001"
+
+    env_file:
+      - .env
+
+    environment:
+
+      PORT: 3001
+
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: hospital_qr
+      DB_USER: postgres
+
+      JWT_EXPIRES: 8h
+
+      PATIENT_SERVICE_URL: http://patient-service:3005
+      APPOINTMENT_SERVICE_URL: http://appointment-service:3002
+
+    depends_on:
+
+      db:
+        condition: service_healthy
+
+      patient-service:
+        condition: service_started
+
+###########################################################
+
+  patient-service:
+
+    build:
+      context: ./backend/patient-service
+      dockerfile: Dockerfile
+
+    container_name: hospitalqr_patient_service
+
+    restart: unless-stopped
+
+    ports:
+      - "3005:3005"
+
+    env_file:
+      - .env
+
+    environment:
+
+      PORT: 3005
+
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: hospital_qr
+      DB_USER: postgres
+
+      JWT_EXPIRES: 8h
+
+    depends_on:
+
+      db:
+        condition: service_healthy
+
+###########################################################
+
+  medical-service:
+
+    build:
+      context: ./backend/medical-service
+      dockerfile: Dockerfile
+
+    container_name: hospitalqr_medical_service
+
+    restart: unless-stopped
+
+    ports:
+      - "3004:3004"
+
+    env_file:
+      - .env
+
+    environment:
+
+      PORT: 3004
+
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: hospital_qr
+      DB_USER: postgres
+
+      JWT_EXPIRES: 8h
+
+    depends_on:
+
+      db:
+        condition: service_healthy
+
+###########################################################
+
+  appointment-service:
+
+    build:
+      context: ./backend/appointment-service
+      dockerfile: Dockerfile
+
+    container_name: hospitalqr_appointment_service
+
+    restart: unless-stopped
+
+    ports:
+      - "3002:3002"
+
+    env_file:
+      - .env
+
+    environment:
+
+      PORT: 3002
+
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: hospital_qr
+      DB_USER: postgres
+
+      JWT_EXPIRES: 8h
+
+      ADMIN_SERVICE_URL: http://admin-service:3001
+
+    depends_on:
+
+      db:
+        condition: service_healthy
+
+###########################################################
+
+  frontend:
+
+    build:
+
+      context: ./frontend
+      dockerfile: Dockerfile
+
+      # A diferencia de docker-compose.yml (dev), estas 5 vienen del .env
+      # (escrito por infra/user_data.sh con el DNS real del ALB), no
+      # hardcodeadas a localhost.
+      args:
+        VITE_AUTH_URL: ${VITE_AUTH_URL}
+        VITE_ADMIN_URL: ${VITE_ADMIN_URL}
+        VITE_PATIENT_URL: ${VITE_PATIENT_URL}
+        VITE_APPOINTMENT_URL: ${VITE_APPOINTMENT_URL}
+        VITE_MEDICAL_URL: ${VITE_MEDICAL_URL}
+
+    container_name: hospitalqr_frontend
+
+    restart: unless-stopped
+
+    ports:
+      - "5173:4173"
+
+    depends_on:
+
+      auth-service:
+        condition: service_started
+
+      admin-service:
+        condition: service_started
+
+      patient-service:
+        condition: service_started
+
+      appointment-service:
+        condition: service_started
+
+      medical-service:
+        condition: service_started
+
+volumes:
+
+  db_data:

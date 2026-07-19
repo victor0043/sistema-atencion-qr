@@ -1,0 +1,50 @@
+# =============================================================
+# terraform.tfvars.example
+# Copiar a terraform.tfvars y completar con valores reales.
+# terraform.tfvars NUNCA se versiona (ver .gitignore).
+#
+# Las credenciales de AWS (AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY,
+# AWS_SESSION_TOKEN) NO van aquí — se exportan como variables de
+# entorno antes de correr terraform, tal como las entrega el AWS
+# Academy Learner Lab (botón "AWS Details" > "Show" > copiar/exportar).
+# =============================================================
+
+project_name = "hospitalqr"
+aws_region   = "us-east-1"
+
+# AMI Ubuntu 22.04 LTS us-east-1 (verificar vigencia en AWS Console)
+ec2_ami = "ami-0c7217cdde317cfec"
+
+ec2_instance_type = "t3.small"
+
+# Crear en AWS Console > EC2 > Key Pairs > Create key pair
+# Descargar el .pem y guardarlo en ~/.ssh/ (chmod 400)
+key_pair_name = "hospitalqr-key"
+
+# Tu IP pública + /32 (busca 'cual es mi ip' en Google)
+ssh_allowed_cidr = "TU_IP_PUBLICA/32"
+
+# Verificar en AWS Console > IAM > Roles > LabRole > Instance profiles
+lab_instance_profile = "LabInstanceProfile"
+
+# RDS (gestionado, no conectado a la app todavía)
+db_name            = "hospital_qr"
+db_username        = "postgres"
+db_password        = "CambiarPorPasswordSeguro123!"
+rds_multi_az       = false
+rds_instance_class = "db.t3.micro"
+
+# Repo (usar github_pat solo si el repo es privado)
+github_repo_url = "https://github.com/victor0043/sistema-atencion-qr.git"
+github_pat      = ""
+github_branch   = "main"
+
+# Secretos de la app (mismos valores simples ya usados en el .env local
+# de desarrollo — el objetivo es el mecanismo, no la fortaleza del secreto)
+db_password_app  = "admin123"
+jwt_secret       = "HospitalQR2026"
+internal_api_key = "secret-internal-key"
+
+# Azure Blob Storage — cuenta real, copiar del .env local
+azure_storage_connection_string = "COPIAR_DEL_ENV_LOCAL"
+azure_storage_container_name    = "contenedorqr"

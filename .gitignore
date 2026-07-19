@@ -67,3 +67,18 @@ Thumbs.db
 
 *.tmp
 *.temp
+
+# ======================================
+# TERRAFORM (infra/)
+# ======================================
+
+infra/.terraform/
+infra/terraform.tfstate
+infra/terraform.tfstate.backup
+infra/terraform.tfvars
+infra/*.tfplan
+infra/crash.log
+
+# Mantener el ejemplo de variables y el lock de providers
+!infra/terraform.tfvars.example
+!infra/.terraform.lock.hcl
