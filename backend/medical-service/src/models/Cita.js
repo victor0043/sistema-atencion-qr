@@ -37,6 +37,10 @@ const Cita = sequelize.define('citas', {
 
     fecha_creacion: {
         type: DataTypes.DATE
+    },
+
+    qr_blob_url: {
+        type: DataTypes.STRING
     }
 
 }, {

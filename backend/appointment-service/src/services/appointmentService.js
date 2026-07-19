@@ -1,7 +1,10 @@
+const QRCode = require('qrcode');
+
 const Cita = require('../models/Cita');
 const Paciente = require('../models/Paciente');
 const Medico = require('../models/Medico');
 const Usuario = require('../models/Usuario');
+const { uploadQRImage } = require('./blobStorageService');
 
 const INTERNAL_API_KEY = process.env.INTERNAL_API_KEY;
 if (!INTERNAL_API_KEY) {
@@ -123,6 +126,11 @@ class AppointmentService {
 
             const codigoQR = `CITA-${Date.now()}`;
 
+            // Genera la imagen real del QR (antes solo se renderizaba en el
+            // frontend con qrcode.react) y la sube a Blob Storage.
+            const qrBuffer = await QRCode.toBuffer(codigoQR, { type: 'png' });
+            const qrBlobUrl = await uploadQRImage(qrBuffer, `${codigoQR}.png`);
+
             const cita = await Cita.create({
 
                 paciente_id: datos.paciente_id,
@@ -130,7 +138,8 @@ class AppointmentService {
                 fecha: datos.fecha,
                 hora: datos.hora,
                 estado: 'AGENDADA',
-                codigo_qr: codigoQR
+                codigo_qr: codigoQR,
+                qr_blob_url: qrBlobUrl
 
             });
 
