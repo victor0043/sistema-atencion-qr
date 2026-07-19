@@ -28,6 +28,28 @@ const [filtro, setFiltro] = useState("");
 const usuario = JSON.parse(localStorage.getItem("usuario"));
 const esAdmin = usuario?.rol === "ADMIN" || usuario?.rol === "ADMINISTRATIVO";
 
+// Modal del QR: se define una sola vez y se incluye en cualquier rama que lo
+// dispare (vista admin de la tabla o vista individual del paciente), en vez
+// de vivir solo en el JSX de una de las dos, donde la otra rama nunca lo alcanza.
+const qrModal = qrVisible && (
+  <div style={{position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 2000}} onClick={() => setQrVisible(false)}>
+    <div style={{background: 'white', padding: 20, borderRadius: 12, minWidth: 280}} onClick={(e) => e.stopPropagation()}>
+        <h3 style={{marginTop:0}}>QR de Confirmación</h3>
+        {qrValue ? (
+            <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+                <QRCodeSVG value={qrValue} size={220} level="H" />
+                <p style={{fontSize: 12, color: '#374151', marginTop: 8, textAlign: 'center'}}>{qrValue}</p>
+            </div>
+        ) : (
+            <p>No hay código disponible para esta cita.</p>
+        )}
+        <div style={{marginTop: 12}}>
+            <button onClick={() => setQrVisible(false)} style={{padding: '8px 12px', borderRadius: 6, border: 'none', background: '#1565c0', color: 'white', cursor: 'pointer'}}>Cerrar</button>
+        </div>
+    </div>
+  </div>
+);
+
 const cargar = async () => {
     setLoading(true);
     setError(null);
@@ -217,6 +239,8 @@ if (esAdmin) {
             {citasFiltradas.length === 0 && (
                 <p style={{marginTop: '20px', textAlign: 'center', color: '#999'}}>No hay citas registradas hoy</p>
             )}
+
+            {qrModal}
         </DashboardLayout>
     );
 }
@@ -286,24 +310,7 @@ cargar();
 />
 }
 
-{qrVisible && (
-  <div style={{position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 2000}} onClick={() => setQrVisible(false)}>
-    <div style={{background: 'white', padding: 20, borderRadius: 12, minWidth: 280}} onClick={(e) => e.stopPropagation()}>
-        <h3 style={{marginTop:0}}>QR de Confirmación</h3>
-        {qrValue ? (
-            <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-                <QRCodeSVG value={qrValue} size={220} level="H" />
-                <p style={{fontSize: 12, color: '#374151', marginTop: 8, textAlign: 'center'}}>{qrValue}</p>
-            </div>
-        ) : (
-            <p>No hay código disponible para esta cita.</p>
-        )}
-        <div style={{marginTop: 12}}>
-            <button onClick={() => setQrVisible(false)} style={{padding: '8px 12px', borderRadius: 6, border: 'none', background: '#1565c0', color: 'white', cursor: 'pointer'}}>Cerrar</button>
-        </div>
-    </div>
-  </div>
-)}
+{qrModal}
 
 </DashboardLayout>
 
