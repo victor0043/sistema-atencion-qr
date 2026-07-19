@@ -3,6 +3,11 @@ const Paciente = require('../models/Paciente');
 const Medico = require('../models/Medico');
 const Usuario = require('../models/Usuario');
 
+const INTERNAL_API_KEY = process.env.INTERNAL_API_KEY;
+if (!INTERNAL_API_KEY) {
+    throw new Error('INTERNAL_API_KEY no está definida en el entorno. Configúrala en el .env antes de arrancar el servicio.');
+}
+
 class AppointmentService {
 
     // Listar todas las citas
@@ -177,7 +182,6 @@ class AppointmentService {
             // Notificar a admin-service para actualizar estado del médico asociado
             try {
                 const ADMIN_SERVICE_URL = process.env.ADMIN_SERVICE_URL || 'http://localhost:3001';
-                const INTERNAL_API_KEY = process.env.INTERNAL_API_KEY || 'secret-internal-key';
 
                 const estadoMedico = (estado === 'ATENDIENDO') ? 'ATENDIENDO' : (estado === 'FINALIZADA' ? 'DISPONIBLE' : (estado === 'EN_ESPERA' ? 'EN_ESPERA' : 'DISPONIBLE'));
 

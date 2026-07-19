@@ -1,5 +1,10 @@
 const adminService = require('../services/adminService');
 
+const INTERNAL_API_KEY = process.env.INTERNAL_API_KEY;
+if (!INTERNAL_API_KEY) {
+    throw new Error('INTERNAL_API_KEY no está definida en el entorno. Configúrala en el .env antes de arrancar el servicio.');
+}
+
 class AdminController {
 
     //=========================================
@@ -303,7 +308,6 @@ class AdminController {
 
             // Permitir llamadas internas mediante la cabecera x-service-key
             const serviceKey = req.headers['x-service-key'];
-            const INTERNAL_API_KEY = process.env.INTERNAL_API_KEY || 'secret-internal-key';
 
             if (serviceKey !== INTERNAL_API_KEY) {
                 return res.status(401).json({ ok: false, mensaje: 'No autorizado' });

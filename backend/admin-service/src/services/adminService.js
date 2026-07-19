@@ -7,7 +7,11 @@ const Rol = require('../models/Rol');
 
 const PATIENT_SERVICE_URL = process.env.PATIENT_SERVICE_URL || 'http://localhost:3005';
 const APPOINTMENT_SERVICE_URL = process.env.APPOINTMENT_SERVICE_URL || 'http://localhost:3002';
-const INTERNAL_API_KEY = process.env.INTERNAL_API_KEY || 'secret-internal-key';
+
+const INTERNAL_API_KEY = process.env.INTERNAL_API_KEY;
+if (!INTERNAL_API_KEY) {
+    throw new Error('INTERNAL_API_KEY no está definida en el entorno. Configúrala en el .env antes de arrancar el servicio.');
+}
 
 async function crearPacienteInterno(usuarioId) {
     const payload = {
