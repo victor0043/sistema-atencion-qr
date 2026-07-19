@@ -11,15 +11,25 @@ Este repositorio contiene varios microservicios y un frontend para el sistema de
 - `backend/patient-service` - Microservicio de pacientes
 - `frontend` - Aplicación React/Vite
 
-## Variables de entorno
+## Setup
 
-Los secretos compartidos (`DB_PASSWORD`, `JWT_SECRET`, `INTERNAL_API_KEY`) se leen desde
-un archivo `.env` en la raíz del proyecto (ver `env_file:` en `docker-compose.yml`). Ya existe
-un `.env` con valores de desarrollo listos para usar; `.env.example` documenta el formato.
+`.env` no se versiona (ver `.gitignore`), así que en un clone limpio hay que crearlo
+antes de levantar el stack:
+
+```bash
+cp .env.example .env
+docker-compose up --build
+```
+
+`.env.example` ya trae valores de ejemplo listos para usar (no vacíos) para los 3
+secretos compartidos — `DB_PASSWORD`, `JWT_SECRET` e `INTERNAL_API_KEY` — así que
+copiarlo tal cual alcanza para un entorno de desarrollo/curso, sin tener que adivinar
+qué poner. `docker-compose.yml` los lee vía `env_file:` en cada servicio (y
+`${DB_PASSWORD}` para `POSTGRES_PASSWORD` en el servicio `db`).
 
 ## Ejecutar con Docker Compose
 
-Desde la raíz del proyecto:
+Desde la raíz del proyecto (después del paso de Setup):
 
 ```bash
 docker-compose up --build
