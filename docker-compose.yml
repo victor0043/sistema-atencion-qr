@@ -195,6 +195,8 @@ services:
 
       JWT_EXPIRES: 8h
 
+      ADMIN_SERVICE_URL: http://admin-service:3001
+
     depends_on:
 
       db:
