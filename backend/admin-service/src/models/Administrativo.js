@@ -31,4 +31,15 @@ const Administrativo = sequelize.define('administrativos', {
 
 });
 
+// Relación bidireccional con Usuario
+const Usuario = require('./Usuario');
+
+Administrativo.belongsTo(Usuario, {
+    foreignKey: 'usuario_id'
+});
+
+Usuario.hasOne(Administrativo, {
+    foreignKey: 'usuario_id'
+});
+
 module.exports = Administrativo;

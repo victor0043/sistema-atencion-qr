@@ -37,4 +37,15 @@ const Atencion = sequelize.define('atenciones', {
 
 });
 
+// Relación bidireccional con Cita
+const Cita = require('./Cita');
+
+Atencion.belongsTo(Cita, {
+    foreignKey: 'cita_id'
+});
+
+Cita.hasMany(Atencion, {
+    foreignKey: 'cita_id'
+});
+
 module.exports = Atencion;

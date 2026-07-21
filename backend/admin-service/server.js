@@ -36,6 +36,24 @@ app.use(express.json());
 
 const { sequelize } = require('./src/config/database');//  Ruta correcta
 
+// Importar modelos para sincronización
+const Rol = require('./src/models/Rol');
+const Usuario = require('./src/models/Usuario');
+const Medico = require('./src/models/medicos');
+const Administrativo = require('./src/models/Administrativo');
+const Paciente = require('./src/models/Paciente');
+
+// Helper: sincronizar tablas con reintentos (race conditions)
+const syncConReintento = async (model, options = {}, intentos = 5) => {
+    for (let intento = 1; intento <= intentos; intento++) {
+        try {
+            return await model.sync(options);
+        } catch (error) {
+            if (intento === intentos) throw error;
+            await new Promise((resolve) => setTimeout(resolve, 500 * intento));
+        }
+    }
+};
 
 //=========================================
 // ROUTES
@@ -74,36 +92,45 @@ app.get('/', (req,res)=>{
 
 
 //=========================================
-// DATABASE CONNECTION
+// DATABASE CONNECTION Y SINCRONIZACIÓN
 //=========================================
 
-sequelize.authenticate()
+const iniciarServidor = async () => {
+    try {
+        // Autenticar
+        await sequelize.authenticate();
+        console.log("✅ PostgreSQL conectado");
 
-.then(()=>{
+        // Sincronizar tablas en orden correcto (respetando FKs)
+        // Primero: tablas sin dependencias
+        await syncConReintento(Rol);
+        await syncConReintento(Usuario);
+        
+        // Luego: tablas que dependen de Usuario
+        await Promise.all([
+            syncConReintento(Medico),
+            syncConReintento(Administrativo),
+            syncConReintento(Paciente)
+        ]);
 
-    console.log("PostgreSQL conectado");
+        console.log("✅ Tablas sincronizadas correctamente");
 
-})
+        // Ahora sí, iniciar el servidor
+        app.listen(PORT, () => {
+            console.log('=================================');
+            console.log(`Admin Service ejecutándose en puerto ${PORT}`);
+            console.log('=================================');
+        });
 
-.catch(error=>{
-
-    console.log("Error BD:",error);
-
-});
-
-
+    } catch (error) {
+        console.error('❌ Error durante inicialización:', error.message || error);
+        process.exit(1);
+    }
+};
 
 //=========================================
-// SERVER
+// INICIAR SERVIDOR
 //=========================================
 
-const PORT = process.env.PORT || 4004;
-
-
-app.listen(PORT,()=>{
-
-    console.log(
-        `Admin Service ejecutándose en puerto ${PORT}`
-    );
-
-});
+const PORT = process.env.PORT || 3001;
+iniciarServidor();

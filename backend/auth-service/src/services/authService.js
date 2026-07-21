@@ -13,13 +13,11 @@ class AuthService {
 
             const cleanRut = String(rut || '').toUpperCase().replace(/[\.\-\s]/g, '');
 
-            // Buscar usuario
-
+            // Buscar usuario con RUT normalizado
+            // El modelo tiene hook que normaliza RUT al guardar,
+            // así que buscamos con igualdad simple (sin regex_replace)
             const usuario = await Usuario.findOne({
-                where: where(
-                    fn('regexp_replace', fn('upper', col('rut')), '[.\\-\\s]', '', 'g'),
-                    cleanRut
-                ),
+                where: { rut: cleanRut },
                 include:[
                     {
                         model: Rol,
