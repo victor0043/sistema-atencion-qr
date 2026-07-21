@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt');
+const { fn, col, where } = require('sequelize');
 const Usuario = require('../models/Usuario');
 const Rol = require('../models/Rol');
 
@@ -10,23 +11,21 @@ class AuthService {
 
         try{
 
-            const cleanRut = String(rut || '').replace(/[\.\-\s]/g, '');
+            const cleanRut = String(rut || '').toUpperCase().replace(/[\.\-\s]/g, '');
 
             // Buscar usuario
 
             const usuario = await Usuario.findOne({
-
-                where:{
-                    rut: cleanRut
-                },
-
+                where: where(
+                    fn('regexp_replace', fn('upper', col('rut')), '[.\\-\\s]', '', 'g'),
+                    cleanRut
+                ),
                 include:[
                     {
                         model: Rol,
                         attributes:['id','nombre']
                     }
                 ]
-
             });
 
             if(!usuario){

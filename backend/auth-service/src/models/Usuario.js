@@ -43,7 +43,17 @@ const Usuario = sequelize.define('usuarios', {
 },
 {
     tableName: 'usuarios',
-    timestamps: false
+    timestamps: false,
+    hooks: {
+        beforeValidate: (usuario) => {
+            if (usuario.rut) {
+                usuario.rut = String(usuario.rut).toUpperCase().replace(/[\.\-\s]/g, '');
+            }
+            if (usuario.correo) {
+                usuario.correo = String(usuario.correo).trim().toLowerCase();
+            }
+        }
+    }
 });
 
 Rol.hasMany(Usuario,{

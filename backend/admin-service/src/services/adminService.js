@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt');
+const { fn, col, where } = require('sequelize');
 
 const Usuario = require('../models/Usuario');
 const Medico = require('../models/medicos');
@@ -133,11 +134,14 @@ class AdminService {
 
             // Normalizar RUT y correo para validaciones
             const rawRut = datos.rut || '';
-            const cleanRut = String(rawRut).replace(/[.\-\s]/g, '');
+            const cleanRut = String(rawRut).toUpperCase().replace(/[\.\-\s]/g, '');
             const email = datos.correo ? String(datos.correo).trim().toLowerCase() : null;
 
             const existeRut = await Usuario.findOne({
-                where: { rut: cleanRut }
+                where: where(
+                    fn('regexp_replace', fn('upper', col('rut')), '[.\\-\\s]', '', 'g'),
+                    cleanRut
+                )
             });
 
             if (existeRut) {
@@ -149,7 +153,10 @@ class AdminService {
 
             if (email) {
                 const existeCorreo = await Usuario.findOne({
-                    where: { correo: email }
+                    where: where(
+                        fn('lower', col('correo')),
+                        email
+                    )
                 });
 
                 if (existeCorreo) {
